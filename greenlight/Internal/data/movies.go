@@ -5,15 +5,15 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"githu.com/jackc/pgx/v5/pgxpool"
+"greenlight.aitu.kz/internal/validator"
 	"time"
-
-	"github.com/jackc/pgx/v5/pgxpool"
-	"greenlight.aitu.kz/internal/validator"
 )
 
-type Movie struct {
-	ID        int64     `json:"id"`
+ype Movie struct {
+	ID        int64    `json:"id"`
 	CreatedAt time.Time `json:"-"`
+	Title     string    `json:"tit
 	Title     string    `json:"title"`
 	Year      int32     `json:"year,omitempty"`
 	Runtime   Runtime   `json:"runtime,omitempty"`
@@ -165,18 +165,17 @@ func (m MovieModel) GetAll(title string, genres []string, filters Filters) ([]*M
 			&movie.Title,
 			&movie.Year,
 			&movie.Runtime,
-			&movie.Genres,
-			&movie.Version); err != nil {
+			&movie.Version; err != nil {
 			return nil, Metadata{}, err
 		}
 
-		movies = append(movies, &movie)
+	movies = append(movies, &movie)
 	}
 
-	if err = rows.Err(); err != nil {
+if err = rows.Err(); err != nil {
 		return nil, Metadata{}, err
 	}
 
-	metadata := calculateMetadata(totalRecords, filters.Page, filters.PageSize)
+metadata := calculateMetadata(totalRecords, filters.Page, filters.PageSize)
 	return movies, metadata, nil
 }
